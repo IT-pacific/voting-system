@@ -8,10 +8,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // MySQL connection setup
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '', // replace with your MySQL root password
-  database: 'voting_schema',
+  host: 'bkygjmgnpeqttueikx0q-mysql.services.clever-cloud.com',
+  user: 'u2dgdso2fcf3vvbb',
+  password: 'mlyU8LDfN1hBQC8GAIDn', // replace with your MySQL root password
+  database: 'bkygjmgnpeqttueikx0q',
 });
 
 db.connect((err) => {
