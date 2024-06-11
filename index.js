@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const db = mysql.createConnection({
   host: 'bkygjmgnpeqttueikx0q-mysql.services.clever-cloud.com',
   user: 'u2dgdso2fcf3vvbb',
-  password: 'mlyU8LDfN1hBQC8GAIDn', // Replace with your MySQL password
+  password: 'mlyU8LDfN1hBQC8GAIDn',
   database: 'bkygjmgnpeqttueikx0q',
 });
 
@@ -49,12 +49,12 @@ app.post('/ussd', (req, res) => {
   // Determine next action based on user input
   if (userInput.length === 1 && userInput[0] === '') {
     // First level menu: Language selection
-    response = `CON Welcome to ildephonse voting booth\n`;
+    response = `CON Welcome to our system which language do you prefer:\n`;
     response += `1. English\n`;
     response += `2. kinyarwanda`;
   } else if (userInput.length === 1 && userInput[0] !== '') {
     // Save user's language choice and move to the name input menu
-    userLanguages[phoneNumber] = userInput[0] === '1' ? 'en' : 'sw';
+    userLanguages[phoneNumber] = userInput[0] === '1' ? 'en' : 'kiny';
     response =
       userLanguages[phoneNumber] === 'en'
         ? `CON Please enter your name:`
@@ -66,22 +66,34 @@ app.post('/ussd', (req, res) => {
     // Third level menu: Main menu
     response =
       userLanguages[phoneNumber] === 'en'
-        ? `CON Hi ${userNames[phoneNumber]}, choose an option:\n1. Vote Candidate\n2. View Votes`
-        : `CON Amakuru ${userNames[phoneNumber]}, hitamo:\n1. umukandida\n2. reba abakandida`;
+        ? `CON Hello ${userNames[phoneNumber]}, choose an option:\n1. Vote Candidate\n2. View Votes`
+        : `CON Amakuru ${userNames[phoneNumber]}, hitamo:\n1. umukandida\n2. reba amajwi abakandida`;
   } else if (userInput.length === 3) {
     if (userInput[2] === '1') {
       // Check if the phone number has already voted
       if (voters.has(phoneNumber)) {
         response =
           userLanguages[phoneNumber] === 'en'
-            ? `END You have already voted. Thank you!`
-            : `END watoye. urakoze!`;
+            ? `END You have already voted!`
+            : `END wemere gutora incuro imwe!`;
       } else {
         // Voting option selected
-        response =
-          userLanguages[phoneNumber] === 'en'
-            ? `CON Select a candidate:\n1. uwase chanvelyne\n2. Kenny NIYIGABA Dinnah\n3. Jean Paul MUTABAZI\n4. ERIC UWAYO\n5. KAMANZI lafiki`
-            : `CON hitamo umukandida:\n1. uwase chancelyne\n2. Kenny NIYIGABA Dinnah\n3. Jean Paul MUTABAZI\n4. ERIC UWAYO\n5. KAMANZI lafiki`;
+        // response =
+        //   userLanguages[phoneNumber] === 'en'
+        //     ? `CON Select a candidate:\n1. uwase chanvelyne\n2. Kenny NIYIGABA Dinnah\n3. Jean Paul MUTABAZI\n4. ERIC UWAYO\n5. KAMANZI lafiki`
+        //     : `CON hitamo umukandida:\n1. uwase chancelyne\n2. Kenny NIYIGABA Dinnah\n3. Jean Paul MUTABAZI\n4. ERIC UWAYO\n5. KAMANZI lafiki`;
+        response = `CON Select Candidate`;
+        db.query('SELECT * FROM candidates', (err, results) => {
+          if (err) {
+            console.error('Error retrieving candidates:', err);
+            res.send(`END Error retrieving candidates`);
+          } else {
+            results.forEach((candidate) => {
+              response += `\n${candidate.id}. ${candidate.names}`;
+            });
+            res.send(response);
+          }
+        });
       }
     } else if (userInput[2] === '2') {
       // View votes option selected
