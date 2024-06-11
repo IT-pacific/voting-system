@@ -78,21 +78,21 @@ app.post('/ussd', (req, res) => {
             : `END wemere gutora incuro imwe!`;
       } else {
         // Voting option selected
-        // response =
-        //   userLanguages[phoneNumber] === 'en'
-        //     ? `CON Select a candidate:\n1. uwase chanvelyne\n2. Kenny NIYIGABA Dinnah\n3. Jean Paul MUTABAZI\n4. ERIC UWAYO\n5. KAMANZI lafiki`
-        //     : `CON hitamo umukandida:\n1. uwase chancelyne\n2. Kenny NIYIGABA Dinnah\n3. Jean Paul MUTABAZI\n4. ERIC UWAYO\n5. KAMANZI lafiki`;
-        db.query('SELECT * FROM candidates', (err, res) => {
-          if (err) {
-            console.error('Error retrieving candidates:', err);
-            res.send(`END Error retrieving candidates`);
-          } else {
-            results.forEach((candidate) => {
-              response += `\n${candidate.id}. ${candidate.names}`;
-            });
-            res.send(response);
-          }
-        });
+        response =
+          userLanguages[phoneNumber] === 'en'
+            ? `CON Select a candidate:\n1. Umulisa Kathia\n2. Manzi kyle\n3. Mugabo justin\n4. Mukiza fabrice`
+            : `CON hitamo umukandida:\n1.Umulisa Kathia\n2. Manzi kyle\n3. Mugabo justin\n4. Mukiza fabrice`;
+        // db.query('SELECT * FROM candidates', (err, res) => {
+        //   if (err) {
+        //     console.error('Error retrieving candidates:', err);
+        //     res.send(`END Error retrieving candidates`);
+        //   } else {
+        //     results.forEach((candidate) => {
+        //       response += `\n${candidate.id}. ${candidate.names}`;
+        //     });
+        //     res.send(response);
+        //   }
+        // });
       }
     } else if (userInput[2] === '2') {
       // View votes option selected
