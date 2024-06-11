@@ -82,8 +82,7 @@ app.post('/ussd', (req, res) => {
         //   userLanguages[phoneNumber] === 'en'
         //     ? `CON Select a candidate:\n1. uwase chanvelyne\n2. Kenny NIYIGABA Dinnah\n3. Jean Paul MUTABAZI\n4. ERIC UWAYO\n5. KAMANZI lafiki`
         //     : `CON hitamo umukandida:\n1. uwase chancelyne\n2. Kenny NIYIGABA Dinnah\n3. Jean Paul MUTABAZI\n4. ERIC UWAYO\n5. KAMANZI lafiki`;
-        response = `CON Select Candidate`;
-        db.query('SELECT * FROM candidates', (err, results) => {
+        db.query('SELECT * FROM candidates', (err, res) => {
           if (err) {
             console.error('Error retrieving candidates:', err);
             res.send(`END Error retrieving candidates`);
