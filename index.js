@@ -24,8 +24,9 @@ db.connect((err) => {
 
 // USSD logic
 app.post('/ussd', (req, res) => {
+  console.log('endpoint accessible');
   const { sessionId, serviceCode, phoneNumber, text } = req.body;
-  const textArray = text.split('*');
+  // const textArray = text.split('*');
   let response = '';
 
   if (text === '') {
@@ -128,7 +129,7 @@ app.post('/ussd', (req, res) => {
   }
 });
 
-const PORT = 3306;
+const PORT = 10000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
